@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-industrial-dark: #080A0F;
+  --color-industrial-panel: #131722;
+  --color-industrial-border: #232C3A;
+  --color-dcs-green: #10B981;
+  --color-dcs-amber: #F59E0B;
+  --color-dcs-red: #EF4444;
+  --color-dcs-blue: #FF6B00;
+  --color-nhbk-pink: #FF8533;
+}
+
+/* Custom process flow animations */
+@keyframes flowForward {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.flow-pipe-active {
+  stroke-dasharray: 8, 4;
+  animation: flowForward 1.2s linear infinite;
+}
+
+.flow-pipe-slow {
+  stroke-dasharray: 6, 6;
+  animation: flowForward 2.5s linear infinite;
+}
+
+.flow-pipe-fast {
+  stroke-dasharray: 10, 3;
+  animation: flowForward 0.6s linear infinite;
+}
+
+/* Custom indicator pulse */
+@keyframes dcsPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+.indicator-pulse {
+  animation: dcsPulse 2s infinite ease-in-out;
+}
+
+/* Hide scrollbar defaults for professional displays */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Print/Report layout margins */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
