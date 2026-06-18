@@ -19,7 +19,7 @@ export interface RefineryRecord {
   ti0034: number;
   ti0035: number;
   ti0036: number;
-  catalystAge: number;       // In months
+  catalystAge: number;       // In months (converted to days inside prediction/training engines)
   octane: number;            // RON target variable
 }
 

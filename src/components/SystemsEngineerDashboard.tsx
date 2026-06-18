@@ -383,7 +383,7 @@ export const SystemsEngineerDashboard: React.FC<SystemsEngineerDashboardProps> =
                         <td className="py-3 px-2 text-gray-400">{item.operatorName}</td>
                         <td className="py-3 px-2 text-right">{item.r1BedAvg.toFixed(1)}</td>
                         <td className="py-3 px-2 text-right">{item.r2BedAvg.toFixed(1)}</td>
-                        <td className="py-3 px-2 text-right">{item.catalystAge} months</td>
+                        <td className="py-3 px-2 text-right">{item.catalystAge} days</td>
                         <td className="py-3 px-2 text-right text-emerald-500 font-bold">{item.actualOctane.toFixed(2)} RON</td>
                         <td className="py-3 px-4 flex justify-center gap-2">
                           <button

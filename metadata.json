@@ -1,6 +1,6 @@
 {
-  "name": "NHBK BABE",
-  "description": "An advanced industrial full-stack platform under NHBK BABE to predict octane number, optimize reactor operating conditions using NSGA-II algorithms, and assist refinery engineers with digital twin monitoring and automated retraining logs.",
+  "name": "Sonatrak project",
+  "description": "An advanced industrial full-stack platform under Sonatrak project to predict octane number, optimize reactor operating conditions using Differential Evolution algorithms, and assist refinery engineers with digital twin monitoring and automated retraining logs.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

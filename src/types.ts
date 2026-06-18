@@ -44,7 +44,7 @@ export interface DCSState {
   r2DeltaT: number;
 
   // Catalyst parameters
-  catalystAge: number;       // In months / cycles
+  catalystAge: number;       // In days
   catalystEfficiency: number;// % health based on delta T vs Temp curve
   catalystRemainingLife: number; // In days
 

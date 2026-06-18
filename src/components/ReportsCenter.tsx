@@ -26,18 +26,18 @@ export const ReportsCenter: React.FC<ReportsCenterProps> = ({
     const savedSims = simulations.filter(s => s.status === "saved");
     
     return `========================================================================
-                      NHBK BABE SERVICE REPORT
-               ISOMERIZATION UNIT NSGA-II OPTIMIZATION SUMMARY
+                      Sonatrak project SERVICE REPORT
+               ISOMERIZATION UNIT DIFFERENTIAL EVOLUTION OPTIMIZATION SUMMARY
 ========================================================================
 Generated On  : ${new Date().toLocaleDateString()}
-Report ID     : NHBK-BABE-OPT-${Date.now().toString().slice(-6)}
+Report ID     : Sonatrak-project-OPT-${Date.now().toString().slice(-6)}
 Department    : Operations & Industrial Automation Dept
 Lead Engineer : queen yamina difllah
 Developer     : yamina difllah
 
 1. EXECUTIVE SUMMARY
 ---------------------
-Over the logged operating window, the NSGA-II Optimization model ran
+Over the logged operating window, the Differential Evolution Optimization model ran
 multi-objective calculations to adjust bed temperatures in Reactors R-001/002.
 Human-in-the-loop validation ensured safe setpoint applications.
 
@@ -70,11 +70,11 @@ RUN CONFIG ${idx + 1}: [ID: ${sim.id}]
     const approvedCount = experiments.filter(e => e.status === "Approved").length;
 
     return `========================================================================
-                      NHBK BABE SERVICE REPORT
+                      Sonatrak project SERVICE REPORT
                ISOMERIZATION PREDICTIVE MODEL PERFORMANCE
 ========================================================================
 Generated On  : ${new Date().toLocaleDateString()}
-Report ID     : NHBK-BABE-ML-${Date.now().toString().slice(-6)}
+Report ID     : Sonatrak-project-ML-${Date.now().toString().slice(-6)}
 Department    : Systems Engineering / Process Optimization team
 Active Model  : XGBoost Regressor Ensemble
 Active Version: v1.0.1
@@ -90,7 +90,7 @@ Evaluation on current running refinery dataset shows high fidelity fitment:
 --------------------------------
 - Lab-Approved Logs Ingested    : ${approvedCount} entries
 - Operator Pending Logs in Queue : ${experiments.filter(e => e.status === "Pending").length} entries
-- Dataset Version               : NHBK-BABE-2026-v2
+- Dataset Version               : Sonatrak-project-2026-v2
 
 3. ALGORITHM FEATURE VALUE SENSITIVITY
 ---------------------------------------
@@ -109,11 +109,11 @@ Evaluation on current running refinery dataset shows high fidelity fitment:
     const ack = alarms.filter(a => a.status === "acknowledged");
 
     return `========================================================================
-                      NHBK BABE SERVICE REPORT
+                      Sonatrak project SERVICE REPORT
                ISOMERIZATION DCS ALARM MATRIX & STATUS LOGS
 ========================================================================
 Generated On  : ${new Date().toLocaleDateString()}
-Report ID     : NHBK-BABE-ALM-${Date.now().toString().slice(-6)}
+Report ID     : Sonatrak-project-ALM-${Date.now().toString().slice(-6)}
 Department    : DCS Control Room & Process Safety Division
 
 1. ALERT COUNT SUMMARY
@@ -134,7 +134,7 @@ ALERT EVENT ${idx + 1}: [${a.status.toUpperCase()}]
 `).join("\n")}
 
 ========================================================================
-          CONTROL ROOM DUTY ENGINEER SIGNATURE: NHBK_BABE_sys
+          CONTROL ROOM DUTY ENGINEER SIGNATURE: Sonatrak_project_sys
 ========================================================================`;
   };
 
@@ -150,7 +150,7 @@ ALERT EVENT ${idx + 1}: [${a.status.toUpperCase()}]
       <div className="lg:col-span-4 bg-industrial-panel border border-industrial-border rounded-lg p-5 space-y-4">
         <div>
           <h3 className="text-sm font-display font-medium text-gray-200 mb-2">
-            NHBK BABE Reports Center
+            Sonatrak project Reports Center
           </h3>
           <p className="text-xs text-gray-500">Select report template to aggregate from live context databases</p>
         </div>
@@ -161,12 +161,12 @@ ALERT EVENT ${idx + 1}: [${a.status.toUpperCase()}]
             onClick={() => setReportType("optimization")}
             className={`w-full py-3 px-4 rounded text-left text-xs font-semibold uppercase tracking-wider transition-all border flex items-center gap-2 ${
               reportType === "optimization"
-                ? "bg-dcs-blue/10 border-dcs-blue text-dcs-blue"
-                : "bg-black/10 border-industrial-border text-gray-400 hover:bg-white/5"
+                ? "bg-orange-500/10 border-orange-500 text-orange-500"
+                : "bg-black/10 border-[#232C3A] text-gray-400 hover:bg-white/5"
             }`}
           >
             <FileText className="w-4 h-4" />
-            NSGA-II Optimization Report
+            Differential Evolution Report
           </button>
 
           {/* Model calibration report selector */}

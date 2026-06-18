@@ -57,18 +57,19 @@ export function predictOctaneValue(
   r1AvgTemp: number,
   r2AvgTemp: number,
   chargeFlowRate: number,
-  catalystAge: number,
+  catalystAgeInDays: number,
   debitH2: number,
   coeffs = activeCoefficients
 ): number {
   // Safe limits
+  const catalystAgeMonths = catalystAgeInDays / 30.4;
   const h2Ratio = chargeFlowRate > 0 ? (debitH2 / chargeFlowRate) : 25;
   const rawOctane =
     coeffs.intercept +
     coeffs.r1TempCoeff * r1AvgTemp +
     coeffs.r2TempCoeff * r2AvgTemp +
     coeffs.chargeCoeff * chargeFlowRate +
-    coeffs.catalystAgeCoeff * catalystAge +
+    coeffs.catalystAgeCoeff * catalystAgeMonths +
     coeffs.h2RatioCoeff * h2Ratio;
 
   // Isomerization thermodynamic equilibrium Octane limits (typically 82 to 99 RON)
@@ -102,7 +103,7 @@ export function evaluateModelPerformance(
       r1Avg,
       r2Avg,
       r.debitCharge,
-      r.catalystAge,
+      r.catalystAge * 30.4,
       r.debitH2,
       coeffs
     );
@@ -178,7 +179,7 @@ export function retrainXGBoostModel(
       ti0034: item.r2BedAvg + 2,
       ti0035: item.r2BedAvg + 6,
       ti0036: item.r2BedAvg + 8,
-      catalystAge: item.catalystAge,
+      catalystAge: item.catalystAge / 30.4,
       octane: item.actualOctane
     });
   });
@@ -198,7 +199,7 @@ export function retrainXGBoostModel(
         r1Avg,
         r2Avg,
         r.debitCharge,
-        r.catalystAge,
+        r.catalystAge * 30.4,
         r.debitH2,
         coeffs
       );

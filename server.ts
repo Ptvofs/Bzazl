@@ -31,7 +31,7 @@ let currentBaseTemps = {
 let currentBaseFlow = 110.0; // Combined feed
 let currentBaseH2 = 2650.0; // Hydrogen recycle flow
 let currentBasePressure = 33.9; // bar
-let catalystAgeMonths = 31.8; // Age of catalyst bed in months
+let catalystAgeDays = 968; // Age of catalyst bed in days
 let isRetraining = false;
 
 // Mock database for saved simulations and empirical run logs
@@ -41,7 +41,7 @@ let savedSimulations: OptimSimulation[] = [
     timestamp: "2026-06-10T14:32:00Z",
     operatorName: "v.khalzone",
     status: "saved",
-    catalystAge: 31.5,
+    catalystAge: 958,
     targetRon: 96.0,
     currentTemps: { r1Inlet: 106.0, r2Inlet: 108.0 },
     currentPredictedRon: 86.8,
@@ -58,7 +58,7 @@ let savedSimulations: OptimSimulation[] = [
     timestamp: "2026-06-14T09:15:30Z",
     operatorName: "v.khalzone",
     status: "applied",
-    catalystAge: 31.7,
+    catalystAge: 964,
     targetRon: 88.0,
     currentTemps: { r1Inlet: 101.5, r2Inlet: 103.2 },
     currentPredictedRon: 86.0,
@@ -82,7 +82,7 @@ let empiricalRuns: EmpiricalRun[] = [
     pressure: 33.5,
     flowCharge: 108.2,
     actualOctane: 88.0,
-    catalystAge: 31.2,
+    catalystAge: 948,
     status: "Approved",
     approvedDate: "2026-06-02T08:12:00Z",
     approvedBy: "v.khalzone"
@@ -96,7 +96,7 @@ let empiricalRuns: EmpiricalRun[] = [
     pressure: 33.8,
     flowCharge: 110.0,
     actualOctane: 88.2,
-    catalystAge: 31.5,
+    catalystAge: 958,
     status: "Approved",
     approvedDate: "2026-06-13T10:00:00Z",
     approvedBy: "v.khalzone"
@@ -110,7 +110,7 @@ let empiricalRuns: EmpiricalRun[] = [
     pressure: 34.0,
     flowCharge: 110.1,
     actualOctane: 87.0, // Low Octane anomalously
-    catalystAge: 31.7,
+    catalystAge: 964,
     status: "Pending"
   }
 ];
@@ -154,16 +154,17 @@ function getDCSState(): DCSState {
   // Catalyst deactivates over time, requiring higher temperatures to maintain same delta T conversion
   const designR1Delta = 21.0;
   const currentR1Delta = r1BedTemps.ti0030 - tIn1;
+  const catalystAgeMonths = catalystAgeDays / 30.4;
   const deactivationFactor = Math.max(0.65, 1 - (catalystAgeMonths * 0.008)); // degradation curve
   const catalystEfficiency = parseFloat((deactivationFactor * 100).toFixed(1));
-  const catalystRemainingLife = Math.max(30, Math.floor(730 - (catalystAgeMonths * 21)));
+  const catalystRemainingLife = Math.max(30, Math.floor(1000 - catalystAgeDays));
 
   // Lab analysis predicted Octane is computed live on current bed averages
   const predictedOctane = predictOctaneValue(
     r1Avg,
     r2Avg,
     liveCharge,
-    catalystAgeMonths,
+    catalystAgeDays,
     liveH2
   );
 
@@ -200,7 +201,7 @@ function getDCSState(): DCSState {
     r2Pressure: parseFloat((livePressure - 0.65).toFixed(2)), // Pressure drop
     r2DeltaT: parseFloat((r2BedTemps.ti0036 - tIn2).toFixed(1)),
 
-    catalystAge: parseFloat(catalystAgeMonths.toFixed(1)),
+    catalystAge: catalystAgeDays,
     catalystEfficiency,
     catalystRemainingLife,
     predictedOctane,
@@ -383,7 +384,7 @@ app.post("/api/experiments", (req, res) => {
     pressure: parseFloat(pressure || 33.8),
     flowCharge: parseFloat(flowCharge || 110.0),
     actualOctane: parseFloat(actualOctane),
-    catalystAge: parseFloat(catalystAge || catalystAgeMonths),
+    catalystAge: parseFloat(catalystAge || catalystAgeDays),
     status: "Pending"
   };
 
@@ -460,7 +461,7 @@ app.get("/api/models/active", (req, res) => {
       algorithm: "XGBoost Regressor Ensemble",
       version: modelHistory[modelHistory.length - 1].version,
       trainingDate: modelHistory[modelHistory.length - 1].trainingDate,
-      datasetVersion: `NHBK-BABE-2026-v${modelHistory.length}`,
+      datasetVersion: `Sonatrak-project-2026-v${modelHistory.length}`,
       datasetSize: modelHistory[modelHistory.length - 1].datasetSize,
       r2: modelHistory[modelHistory.length - 1].r2,
       rmse: modelHistory[modelHistory.length - 1].rmse,
@@ -527,7 +528,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`NHBK BABE Process Optimization System running on port ${PORT}`);
+    console.log(`Sonatrak project Process Optimization System running on port ${PORT}`);
   });
 }
 

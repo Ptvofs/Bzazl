@@ -38,13 +38,20 @@ export const EmpiricalLogs: React.FC<EmpiricalLogsProps> = ({
       return;
     }
 
+    const ageNum = parseInt(catalystAge, 10);
+    if (isNaN(ageNum) || ageNum < 0) {
+      setSaving(false);
+      setErrorMsg("Catalyst age must be a positive integer in days.");
+      return;
+    }
+
     const added = await onAddExperiment({
       r1BedAvg: parseFloat(r1BedAvg),
       r2BedAvg: parseFloat(r2BedAvg),
       pressure: parseFloat(pressure),
       flowCharge: parseFloat(flowCharge),
       actualOctane: octNum,
-      catalystAge: parseFloat(catalystAge)
+      catalystAge: ageNum
     });
 
     if (added) {
@@ -155,13 +162,17 @@ export const EmpiricalLogs: React.FC<EmpiricalLogsProps> = ({
               />
             </div>
             <div>
-              <label className="block text-gray-400 mb-1">Catalyst Bed Age (Months)</label>
+              <label className="block text-gray-400 mb-1">Catalyst Age (Days)</label>
               <input
                 type="number"
-                step="0.1"
+                step="1"
+                min="0"
                 required
                 value={catalystAge}
-                onChange={(e) => setCatalystAge(e.target.value)}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  setCatalystAge(isNaN(val) ? "" : Math.max(0, val).toString());
+                }}
                 className="w-full bg-black/40 border border-industrial-border rounded px-3 py-2 text-sm font-mono text-gray-300 focus:outline-none focus:border-dcs-blue"
               />
             </div>
@@ -209,7 +220,7 @@ export const EmpiricalLogs: React.FC<EmpiricalLogsProps> = ({
                   <th className="py-2.5 px-2">Timestamp</th>
                   <th className="py-2.5 px-2 text-center">Reactor Avg (°C)</th>
                   <th className="py-2.5 px-2 text-right">Lab Target</th>
-                  <th className="py-2.5 px-3 text-right">Fouling (m)</th>
+                  <th className="py-2.5 px-3 text-right">Age (Days)</th>
                   <th className="py-2.5 px-3 text-center">Status</th>
                 </tr>
               </thead>
@@ -222,7 +233,7 @@ export const EmpiricalLogs: React.FC<EmpiricalLogsProps> = ({
                       R1: {item.r1BedAvg.toFixed(1)} / R2: {item.r2BedAvg.toFixed(1)}
                     </td>
                     <td className="py-3 px-2 text-right text-dcs-green font-bold">{item.actualOctane.toFixed(1)} RON</td>
-                    <td className="py-3 px-3 text-right text-gray-400">{item.catalystAge}m</td>
+                    <td className="py-3 px-3 text-right text-gray-400">{item.catalystAge} d</td>
                     <td className="py-3 px-3 text-center">
                       <span className={`inline-flex px-2 py-0.5 rounded-full text-[9px] font-bold ${
                         item.status === "Approved" 
